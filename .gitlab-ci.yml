@@ -1,0 +1,61 @@
+stages:
+  - test_build
+  - test
+  - build
+
+app_test_build:
+  when: on_success
+  stage: test_build
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - echo "APP_ENV=test" > .env.local
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+  script:
+    - docker build -t registry.gitlab.com/chrisshennan/alternativefocus:test .
+    - docker push registry.gitlab.com/chrisshennan/alternativefocus:test
+
+app_test:
+  when: on_success
+  stage: test
+  image: registry.gitlab.com/chrisshennan/alternativefocus:test
+  services:
+    - docker:dind
+  variables:
+    APP_ENV: test
+  before_script:
+    - apt install zip unzip
+    - composer install --ignore-platform-reqs
+  script:
+    - ./bin/console doctrine:database:create
+#    - docker run --rm -v ${PWD}:/app -w /app idlemoments/php:8.3-fpm bash -c "APP_ENV=test doctrine:database:validate"
+    - ./vendor/bin/phpstan analyse
+    - XDEBUG_MODE=coverage ./vendor/bin/phpunit --log-junit phpunit-junit-report.xml --coverage-text --colors=never --coverage-cobertura=coverage.cobertura.xml
+  artifacts:
+    when: on_success
+    expire_in: 7 days
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.cobertura.xml
+      junit: phpunit-junit-report.xml
+
+#Build:
+#  when: on_success
+#  stage: build
+#  image: docker:stable
+#  services:
+#    - docker:dind
+#  before_script:
+#    - apk add --update zip unzip rsync
+#  script:
+#    - docker run -v ${PWD}:/app -w /app -e APP_ENV=prod composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+#  only:
+#    - main
+#  except:
+#    - tags
+#  artifacts:
+#    paths:
+#      - .
+#    expire_in: 7 days
