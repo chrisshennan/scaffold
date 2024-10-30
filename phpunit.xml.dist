@@ -6,8 +6,15 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="false"
+         convertDeprecationsToExceptions="true"
+         forceCoversAnnotation="true"
+         cacheResultFile="./var/cache/phpunit/result.cache"
 >
+    <coverage cacheDirectory="./var/cache/phpunit/code-coverage.cache" processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
