@@ -1,37 +1,70 @@
 stages:
-  - test_build
-  - test
+  - semantic_version
   - build
+  - test
+  - tag_release
 
-app_test_build:
+semantic-versioning:
   when: on_success
-  stage: test_build
+  stage: semantic_version
+  image: hoppr/semantic-release
+  variables:
+    GITLAB_TOKEN: $GITLAB_TOKEN_SEMANTIC_VERSIONING
+  script:
+    - semantic-release
+    - mv release.env $CI_PROJECT_DIR/
+  only:
+    - main
+  artifacts:
+    paths:
+      - release.env
+    reports:
+      dotenv: release.env
+
+app_build_test:
+  when: on_success
+  stage: build
   image: docker
   services:
     - docker:dind
   before_script:
-    - echo "APP_ENV=test" > .env.local
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
   script:
-    - docker build -t registry.gitlab.com/chrisshennan/alternativefocus:test .
-    - docker push registry.gitlab.com/chrisshennan/alternativefocus:test
+    - docker build -t ${CI_REGISTRY_IMAGE}:test-${CI_COMMIT_SHORT_SHA} --build-arg APP_ENV="dev" --build-arg COMPOSER_ARG="--ignore-platform-reqs" .
+    - docker push ${CI_REGISTRY_IMAGE}:test-${CI_COMMIT_SHORT_SHA}
+
+app_build_release_candidate:
+  when: on_success
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:rc-${CI_COMMIT_REF_NAME} .
+    - docker push ${CI_REGISTRY_IMAGE}:rc-${CI_COMMIT_REF_NAME}
+  only:
+    - /^v.*$/
+  except:
+    - branches
 
 app_test:
   when: on_success
   stage: test
-  image: registry.gitlab.com/chrisshennan/alternativefocus:test
-  services:
-    - docker:dind
+  image: ${CI_REGISTRY_IMAGE}:test-${CI_COMMIT_SHORT_SHA}
   variables:
+    GIT_STRATEGY: none
     APP_ENV: test
   before_script:
-    - apt install zip unzip
-    - composer install --ignore-platform-reqs
+    - cd /app
   script:
     - ./bin/console doctrine:database:create
 #    - docker run --rm -v ${PWD}:/app -w /app idlemoments/php:8.3-fpm bash -c "APP_ENV=test doctrine:database:validate"
     - ./vendor/bin/phpstan analyse
     - XDEBUG_MODE=coverage ./vendor/bin/phpunit --log-junit phpunit-junit-report.xml --coverage-text --colors=never --coverage-cobertura=coverage.cobertura.xml
+    - mv phpunit-junit-report.xml $CI_PROJECT_DIR/
+    - mv coverage.cobertura.xml $CI_PROJECT_DIR/
   artifacts:
     when: on_success
     expire_in: 7 days
@@ -41,21 +74,21 @@ app_test:
         path: coverage.cobertura.xml
       junit: phpunit-junit-report.xml
 
-#Build:
-#  when: on_success
-#  stage: build
-#  image: docker:stable
-#  services:
-#    - docker:dind
-#  before_script:
-#    - apk add --update zip unzip rsync
-#  script:
-#    - docker run -v ${PWD}:/app -w /app -e APP_ENV=prod composer install --no-dev --optimize-autoloader --ignore-platform-reqs
-#  only:
-#    - main
-#  except:
-#    - tags
-#  artifacts:
-#    paths:
-#      - .
-#    expire_in: 7 days
+tag_release:
+  when: on_success
+  stage: tag_release
+  image: docker
+  services:
+    - docker:dind
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+  script:
+    - docker pull ${CI_REGISTRY_IMAGE}:rc-${CI_COMMIT_REF_NAME}
+    - docker tag ${CI_REGISTRY_IMAGE}:rc-${CI_COMMIT_REF_NAME} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+  only:
+    - /^v.*$/
+  except:
+    - branches

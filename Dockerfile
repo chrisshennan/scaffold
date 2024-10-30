@@ -1,6 +1,10 @@
 FROM composer AS composer
+
+ARG APP_ENV="prod"
+ARG COMPOSER_ARG="--no-dev --optimize-autoloader --ignore-platform-reqs"
+
 COPY . /app/
-RUN composer install --ignore-platform-reqs
+RUN composer install $COMPOSER_ARG
 
 FROM idlemoments/php:8.3-fpm-dev AS app
 
