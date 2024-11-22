@@ -1,4 +1,4 @@
-name: alternativefocus
+name: ${APP_NAME:-scaffold}
 
 services:
 ###> doctrine/doctrine-bundle ###
