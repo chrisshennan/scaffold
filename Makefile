@@ -2,9 +2,11 @@
 help:
 	@echo 'Following targets exist:'
 	@echo ''
+	@echo '  build-tailwind - build the tailwind assets'
 	@echo '  cache-clear - clear the symfony cache'
 	@echo '  composer-install - install the specified vendor packages'
 	@echo '  composer-update - update the vendor packages'
+	@echo '  initialize - Install composer & tailwind dependencies in a new projct'
 	@echo '  start - starts up the docker docker containers'
 	@echo '  stop - stop up the docker docker containers'
 	@echo '  composer-update - update the vendor packages'
@@ -12,6 +14,10 @@ help:
 	@echo '  validate - check the entities match the database schema'
 	@echo '  watch - update for HTML/CSS changes and refresh'
 	@echo ''
+
+.PHONY: build-tailwind
+build-tailwind:
+	docker compose exec php bash -c "./bin/console tailwind:build"
 
 .PHONY: cache-clear
 cache-clear:
@@ -24,6 +30,9 @@ composer-install:
 .PHONY: composer-update
 composer-update:
 	docker compose exec php bash -c "composer update"
+
+.PHONY: initialize
+initialize: composer-install build-tailwind
 
 .PHONY: phpstan
 phpstan:

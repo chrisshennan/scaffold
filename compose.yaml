@@ -25,8 +25,10 @@ services:
     ports:
       - 80:80
       - 443:443
+    depends_on:
+      - php
     volumes:
-      - ../code:/app:cached
+      - ./:/app:cached
       - ./config/docker/nginx:/etc/nginx/conf.d
     networks:
       - default
