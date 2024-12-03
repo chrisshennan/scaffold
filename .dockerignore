@@ -1,0 +1,28 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!/.env
+!/.env.local
+!/.env.prod
+!/.env.prod.local
+!/assets/
+!/bin/
+!/composer.json
+!/composer.lock
+!/config/
+!/importmap.php
+!/migrations/
+!/public/
+!/src/
+!/templates/
+!/translations
+!/symfony.lock
+!/tailwind.config.js
+
+!/phpunit.xml.dist
+!/phpstan.dist.neon
+!/tests/
+
+# Ignore unnecessary files inside allowed directories
+**/.DS_Store

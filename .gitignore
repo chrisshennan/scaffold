@@ -1,3 +1,8 @@
+###> scaffold ###
+.idea
+/config/*/.env
+###< scaffold ###
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

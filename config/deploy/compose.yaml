@@ -1,0 +1,18 @@
+name: ${APP_NAME}_prod
+
+services:
+  nginx:
+    image: ${CI_REGISTRY_IMAGE}:nginx-${RELEASE}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - asset_data:/app/public/assets
+
+  php:
+    image: ${CI_REGISTRY_IMAGE}:app-${RELEASE}
+    volumes:
+      - asset_data:/tmp/assets
+
+volumes:
+  asset_data:
