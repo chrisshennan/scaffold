@@ -3,12 +3,11 @@
 ## Usage
 
 ```
-# Create project directory
-mkdir scaffold
-cd scaffold
+# Clone the repo
+git clone --depth=1 https://github.com/chrisshennan/scaffold.git
 
-# Clone the repo and reset the origin
-git clone https://github.com/chrisshennan/scaffold.git .
+# Reset the origin 
+cd scaffold
 git remote remove origin
 git remote add origin [new origin]
 git push origin main

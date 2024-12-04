@@ -6,7 +6,7 @@ ARG COMPOSER_ARG="--no-dev --optimize-autoloader --ignore-platform-reqs --no-scr
 COPY composer.* /app/
 RUN composer install $COMPOSER_ARG
 
-FROM php:8.3-fpm AS app
+FROM php:8.3-fpm AS base
 
 RUN apt-get update && apt-get install -y \
         libicu-dev \
@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+FROM base as app
 
 COPY . /app/
 COPY --from=composer /app/vendor /app/vendor
@@ -45,6 +47,10 @@ CMD ["/start-server.sh"]
 FROM app AS app-dev
 
 RUN echo "APP_ENV=dev" > .env.local
+
+RUN apt-get update && apt-get install -y \
+        zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
