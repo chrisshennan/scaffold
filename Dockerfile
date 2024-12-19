@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-FROM base as app
+FROM base AS app
 
 COPY . /app/
 COPY --from=composer /app/vendor /app/vendor
@@ -49,6 +49,7 @@ FROM app AS app-dev
 RUN echo "APP_ENV=dev" > .env.local
 
 RUN apt-get update && apt-get install -y \
+        git \
         zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

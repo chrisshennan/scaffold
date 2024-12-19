@@ -1,8 +1,11 @@
+DOCKER_COMPOSE_COMMAND=docker compose run --rm php
+
 .PHONY: help
 help:
 	@echo 'Following targets exist:'
 	@echo ''
-	@echo '  build-tailwind - build the tailwind assets'
+	@echo '  tailwind-build - build the tailwind assets'
+	@echo '  tailwind-watch - update for HTML/CSS changes and refresh'
 	@echo '  cache-clear - clear the symfony cache'
 	@echo '  composer-install - install the specified vendor packages'
 	@echo '  composer-update - update the vendor packages'
@@ -12,31 +15,54 @@ help:
 	@echo '  composer-update - update the vendor packages'
 	@echo '  tests - run the tests via PHPUnit'
 	@echo '  validate - check the entities match the database schema'
-	@echo '  watch - update for HTML/CSS changes and refresh'
 	@echo ''
-
-.PHONY: build-tailwind
-build-tailwind:
-	docker compose exec php bash -c "./bin/console tailwind:build"
 
 .PHONY: cache-clear
 cache-clear:
-	docker compose exec php bash -c "/bin/console cache:clear"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "/bin/console cache:clear"
 
 .PHONY: composer-install
 composer-install:
-	docker compose exec php bash -c "composer install"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "composer install"
 
 .PHONY: composer-update
 composer-update:
-	docker compose exec php bash -c "composer update"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "composer update"
 
 .PHONY: initialize
-initialize: composer-install build-tailwind
+initialize: git-initialize composer-install tailwind-build start initialize-complete
+
+.PHONY: git-initialize
+git-initialize:
+	@echo -n "What is your git repository origin for this new project?: "; \
+	read REPO; \
+	git remote remove origin; \
+	git remote add origin $$REPO;
+
+.PHONY:
+initialize-complete:
+	@echo ""
+	@echo "##############################"
+	@echo "# SCAFFOLD SETUP COMPLETE 🎉 #"
+	@echo "##############################"
+	@echo ""
+	@echo "Your scaffold setup in now complete.  When you are ready, you can push your code to your repository via\n"
+	@echo "git push origin main\n"
+	@echo "To hints, tips, updates & developments, sign up to my newsletter via https://chrisshennan.com/newsletter\n"
+	@echo "Happy building!"
+	@echo "Chris Shennan (https://chrisshennan.com)\n"
+
+.PHONY: php-cs-fixer-test
+php-cs-fixer-test:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/php-cs-fixer fix --dry-run -v"
+
+.PHONY: php-cs-fixer-fix
+php-cs-fixer-fix:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/php-cs-fixer fix"
 
 .PHONY: phpstan
 phpstan:
-	docker compose exec php bash -c "./vendor/bin/phpstan"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpstan"
 
 .PHONY: start
 start:
@@ -48,12 +74,16 @@ stop:
 
 .PHONY: tests
 tests:
-	docker compose exec php bash -c "./vendor/bin/phpunit"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpunit"
 
 .PHONY: validate
 validate:
-	docker compose exec php bash -c "./bin/console doctrine:schema:validate"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./bin/console doctrine:schema:validate"
 
-.PHONY: watch
-watch:
-	docker compose exec php bash -c "./bin/console tailwind:build --watch"
+.PHONY: tailwind-build
+tailwind-build:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./bin/console tailwind:build"
+
+.PHONY: tailwind-watch
+tailwind-watch:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./bin/console tailwind:build --watch"
