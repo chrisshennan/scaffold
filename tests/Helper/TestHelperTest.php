@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace App\Tests\Helper;
 
 use App\Helper\TestHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \App\Helper\TestHelper
- *
  * @internal
  */
+#[CoversClass(TestHelper::class)]
 class TestHelperTest extends TestCase
 {
-    /**
-     * @covers ::stub
-     */
     public function testStub(): void
     {
         $helper = new TestHelper();
