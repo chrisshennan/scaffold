@@ -8,6 +8,7 @@
 !/.env.prod.local
 !/assets/
 !/bin/
+!/bundles/
 !/composer.json
 !/composer.lock
 !/config/

@@ -1,5 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        scaffold_site_name: '%env(SCAFFOLD_SITE_NAME)%'
+        scaffold_site_strapline: '%env(SCAFFOLD_SITE_STRAPLINE)%'
+        scaffold_site_contact_email: '%env(SCAFFOLD_SITE_CONTACT_EMAIL)%'
+        scaffold_site_url: '%env(SCAFFOLD_SITE_URL)%'
 
 when@test:
     twig:

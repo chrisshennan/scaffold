@@ -1,0 +1,100 @@
+{% extends '@ScaffoldCore/base.html.twig' %}
+
+{% block seohead %}
+    <title>Terms of Service - {{ scaffold_site_name }}!</title>
+
+    <link rel="canonical" href="{{ url('app_terms') }}" />
+
+    <meta property="og:description" content="We want everyone to enjoy using {{ scaffold_site_name }} so please follow the rules" />
+    <meta property="og:scaffold_site_name" content="{{ scaffold_site_name }}" />
+    <meta property="og:title" content="Terms of Service - {{ scaffold_site_name }}"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url('app_terms') }}" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="We want everyone to enjoy using {{ scaffold_site_name }} so please follow the rules" />
+    <meta name="twitter:title" content="Terms of Service - {{ scaffold_site_name }}!" />
+{% endblock %}
+
+{% block body %}
+<article class="prose prose-lg max-w-none mb-10 mt-10">
+    <h1>Terms of Service for {{ scaffold_site_name }}</h1>
+
+    <p><strong>Effective Date:</strong> {{ effective_from|date('jS F Y') }}</p>
+
+    <p>Welcome to {{ scaffold_site_name }} ("Service"). These Terms and Conditions ("Terms") govern your access to and use of our software-as-a-service (SaaS) platform, available at {{ scaffold_site_url }} ("Website"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.</p>
+
+    <h2>1. Definitions</h2>
+    <ul>
+        <li><strong>"Company"</strong> refers to {{ scaffold_site_name }} ({{ scaffold_site_url }}), the provider of the Service and related services.</li>
+        <li><strong>"User"</strong> refers to any individual or entity accessing or using the Service.</li>
+        <li><strong>"Subscription"</strong> refers to the paid access plans available for the Service.</li>
+    </ul>
+
+    <h2>2. Eligibility</h2>
+    <p>You must be at least 18 years old or the legal age in your jurisdiction to use the Service. By using the Service, you represent that you meet this requirement.</p>
+
+    <h2>3. Account Registration</h2>
+    <ul>
+        <li>To access certain features, you must create an account.</li>
+        <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+        <li>You agree to provide accurate and up-to-date information.</li>
+    </ul>
+
+    <h2>4. Subscription and Payment</h2>
+    <ul>
+        <li>The Service is offered on a subscription basis with various pricing plans.</li>
+        <li>Payments are processed via {{ payment_provider }}.</li>
+        <li>The Company reserves the right to change pricing with prior notice.</li>
+        <li>Refunds
+            <ul>
+                <li>If you aren’t satisfied with <strong>{{ scaffold_site_name }}</strong>, we offer a 30 day money back guarantee. Simply cancel your account within the first 30 days and we will automatically refund your payment.</li>
+                <li>After the first 30 days, all refunds are provided at the sole discretion of <strong>{{ scaffold_site_name }}</strong> and on a case-by-case basis and may be refused. <strong>{{ scaffold_site_name }}</strong> will refuse a refund request if we find evidence of fraud, refund abuse, or other manipulative behaviour that entitles <strong>{{ scaffold_site_name }}</strong> to counterclaim the refund.</li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <h2>5. Acceptable Use</h2>
+    <p>You agree not to:</p>
+    <ul>
+        <li>Use the Service for any unlawful or fraudulent activities.</li>
+        <li>Reverse-engineer, decompile, or attempt to access the Service’s source code.</li>
+        <li>Interfere with or disrupt the Service’s operation.</li>
+    </ul>
+
+    <h2>6. Data Privacy and GDPR Compliance</h2>
+    <p>By using the Service, you agree to our data collection and processing practices as outlined in our <a href="{{ path('scaffold_core_bundle_privacy_policy') }}">Privacy Policy</a>.</p>
+    <ul>
+        <li>If you are located in the European Economic Area (EEA), we process your data in compliance with the General Data Protection Regulation (GDPR).</li>
+        <li><strong>Legal Basis for Processing:</strong> We process personal data under legitimate interests, contractual necessity, legal obligations, or consent.</li>
+        <li><strong>User Rights Under GDPR:</strong> You have the right to access, correct, delete, restrict processing, and request data portability for your personal data.</li>
+        <li><strong>Data Transfers:</strong> If data is transferred outside the EEA, we implement appropriate safeguards, such as Standard Contractual Clauses.</li>
+        <li><strong>Consent for Marketing:</strong> Marketing communications will only be sent with your explicit consent, which can be withdrawn at any time.</li>
+    </ul>
+
+    <h2>7. Intellectual Property</h2>
+    <p>All content, trademarks, and software related to the Service are owned by the Company. Users may not copy, modify, or distribute any part of the Service without prior written consent.</p>
+
+    <h2>8. Termination</h2>
+    <p>We may suspend or terminate your access to the Service if you violate these Terms. You may also terminate your account at any time. No refunds will be issued for early termination.</p>
+
+    <h2>9. Disclaimer of Warranties</h2>
+    <p>The Service is provided "as is" and "as available" without warranties of any kind, either express or implied. The Company does not guarantee that the Service will be error-free or uninterrupted.</p>
+
+    <h2>10. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, the Company shall not be liable for any indirect, incidental, or consequential damages arising from the use of the Service.</p>
+
+    <h2>11. Indemnification</h2>
+    <p>You agree to indemnify and hold the Company harmless from any claims, damages, or expenses arising from your use of the Service or violation of these Terms.</p>
+
+    <h2>12. Modifications to Terms</h2>
+    <p>We reserve the right to modify these Terms at any time. Changes will be effective upon posting to the Website. Continued use of the Service constitutes acceptance of the revised Terms.</p>
+
+    <h2>13. Governing Law</h2>
+    <p>These Terms shall be governed by and construed in accordance with the laws of {{ jurisdiction }}. You irrevocably submit to the exclusive jurisdiction of the courts in that State or regions.</p>
+
+    <h2>14. Contact Information</h2>
+    <p>For any questions regarding these Terms, please contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+</article>
+{% endblock %}

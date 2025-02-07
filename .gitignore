@@ -1,6 +1,7 @@
 ###> scaffold ###
 .idea
 /config/*/.env
+
 ###< scaffold ###
 
 ###> symfony/framework-bundle ###

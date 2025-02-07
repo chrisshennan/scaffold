@@ -19,7 +19,7 @@ help:
 
 .PHONY: cache-clear
 cache-clear:
-	$(DOCKER_COMPOSE_COMMAND) bash -c "/bin/console cache:clear"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./bin/console cache:clear"
 
 .PHONY: composer-install
 composer-install:
