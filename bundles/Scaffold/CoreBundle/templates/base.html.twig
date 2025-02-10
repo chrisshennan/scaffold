@@ -13,12 +13,13 @@
     {% endblock %}
 </head>
 <body class="dark:bg-neutral-900 dark:text-neutral-200">
-    {% include '@ScaffoldCore/layout/navbar.html.twig' %}
+    {% include '@ScaffoldCore/layout/components/announcementBar.html.twig' %}
+    {% include '@ScaffoldCore/layout/components/navbar.html.twig' %}
 
     <div class="max-w-[85rem] w-full mx-auto md:flex md:items-center md:gap-3 px-4 sm:px-6 lg:px-8">
         {% block body %}{% endblock %}
     </div>
-    {% include '@ScaffoldCore/layout/footer.html.twig' %}
+    {% include '@ScaffoldCore/layout/components/footer.html.twig' %}
 
 </body>
 </html>
