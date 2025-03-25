@@ -1,27 +1,27 @@
 {% extends '@ScaffoldCore/base.html.twig' %}
 
 {% block seohead %}
-    <title>Privacy Policy - {{ scaffold_site_name }}!</title>
+    <title>Privacy Policy - {{ scaffold_site_name() }}!</title>
 
     <link rel="canonical" href="{{ url('app_privacy_policy') }}" />
 
     <meta property="og:description" content="We take your privacy very seriously. And so should you." />
-    <meta property="og:scaffold_site_name" content="{{ scaffold_site_name }}" />}
-    <meta property="og:title" content="Privacy Policy - {{ scaffold_site_name }}!"/>
+    <meta property="og:scaffold_site_name" content="{{ scaffold_site_name() }}" />}
+    <meta property="og:title" content="Privacy Policy - {{ scaffold_site_name() }}!"/>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url('app_privacy_policy') }}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:description" content="We take your privacy very seriously. And so should you." />
-    <meta name="twitter:title" content="Privacy Policy - {{ scaffold_site_name }}" />
+    <meta name="twitter:title" content="Privacy Policy - {{ scaffold_site_name() }}" />
 {% endblock %}
 
 {% block body %}
     <article class="prose prose-lg max-w-none mt-10 mb-10">
-        <h1>Privacy Policy for {{ scaffold_site_name }}</h1>
+        <h1>Privacy Policy for {{ scaffold_site_name() }}</h1>
         <p><strong>Last Updated</strong>: {{ last_updated|date('jS F Y') }}</p>
 
-        <p>{{ scaffold_site_name }} ("we," "our," or "us") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you use our software-as-a-service (SaaS) platform available at {{ scaffold_site_url }} ("Website"). By using our Service, you agree to the terms of this Privacy Policy.</p>
+        <p>{{ scaffold_site_name() }} ("we," "our," or "us") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you use our software-as-a-service (SaaS) platform available at {{ scaffold_site_url }} ("Website"). By using our Service, you agree to the terms of this Privacy Policy.</p>
 
         <h2>1. Information We Collect</h2>
         <ul>

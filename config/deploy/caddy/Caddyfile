@@ -1,0 +1,19 @@
+{
+    email [your@email.address]
+}
+
+buildwithscaffold.com {
+    root * /app/public
+
+    php_fastcgi php:9000
+
+    # Handle static files directly
+    file_server
+
+    # Symfony specific rewrites
+    try_files {path} {path}/ /index.php{query}
+}
+
+www.buildwithscaffold.com {
+    redir https://buildwithscaffold.com{uri} 301
+}

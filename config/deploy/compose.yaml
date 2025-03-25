@@ -1,18 +1,20 @@
 name: ${APP_NAME}_prod
 
 services:
-  nginx:
-    image: ${CI_REGISTRY_IMAGE}:nginx-${RELEASE}
+  caddy:
+    restart: unless-stopped
+    image: ${CI_REGISTRY_IMAGE}:caddy-${RELEASE}
     ports:
       - 80:80
       - 443:443
     volumes:
-      - asset_data:/app/public/assets
+      - caddy_data:/data
+      - caddy_config:/config
 
   php:
+    restart: unless-stopped
     image: ${CI_REGISTRY_IMAGE}:app-${RELEASE}
-    volumes:
-      - asset_data:/tmp/assets
 
 volumes:
-  asset_data:
+  caddy_data:
+  caddy_config:

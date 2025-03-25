@@ -1,0 +1,36 @@
+{% use 'tailwind_2_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('space-y-2')) }) -%}
+    {{- parent() -}}
+{%- endblock form_row -%}
+
+{%- block form_label -%}
+    {%- set label_attr = label_attr|merge({ class: label_attr.class|default('inline-block font-medium text-gray-800 mt-2.5 dark:text-neutral-200') }) -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block widget_attributes -%}
+    {%- set attr = attr|merge({ class: attr.class|default(widget_class|default('py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600')) ~ (disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500')) ~ (errors|length ? ' ' ~ widget_errors_class|default('border-red-700')) }) -%}
+    {{- parent() -}}
+{%- endblock widget_attributes -%}
+
+{%- block checkbox_row -%}
+    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('space-y-2 flex')) }) -%}
+    {%- set widget_attr = { attr: { class: 'shrink-0 mt-2.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800' }} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_errors(form) -}}
+        <div class="inline-flex items-center">
+            <div class="flex">
+                {{- form_widget(form, widget_attr) -}}
+            </div>
+            <div class="ms-3">
+                {{- form_label(form) -}}
+            </div>
+        </div>
+        {{- form_help(form) -}}
+    </div>
+{%- endblock checkbox_row -%}

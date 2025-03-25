@@ -15,6 +15,7 @@ help:
 	@echo '  composer-update - update the vendor packages'
 	@echo '  tests - run the tests via PHPUnit'
 	@echo '  validate - check the entities match the database schema'
+	@echo '  reset-dev-database - drop, create and migrate the development database'
 	@echo ''
 
 .PHONY: cache-clear
@@ -52,17 +53,25 @@ initialize-complete:
 	@echo "Happy building!"
 	@echo "Chris Shennan (https://chrisshennan.com)\n"
 
-.PHONY: php-cs-fixer-test
-php-cs-fixer-test:
+.PHONY: php-cs-fixer-dry-run
+php-cs-fixer-dry-run:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/php-cs-fixer fix --dry-run -v"
 
-.PHONY: php-cs-fixer-fix
-php-cs-fixer-fix:
+.PHONY: php-cs-fixer-apply
+php-cs-fixer-apply:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/php-cs-fixer fix"
 
 .PHONY: phpstan
 phpstan:
-	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpstan"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpstan --memory-limit=1G"
+
+.PHONY: rector-dry-run
+rector-dry-run:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/rector -n"
+
+.PHONY: rector-apply
+rector-apply:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/rector"
 
 .PHONY: start
 start:
@@ -87,3 +96,11 @@ tailwind-build:
 .PHONY: tailwind-watch
 tailwind-watch:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "./bin/console tailwind:build --watch"
+
+
+.PHONY: reset-dev-database
+reset-dev-database:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:drop --force"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:create"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:migrations:migrate --no-interaction"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:fixtures:load --no-interaction"

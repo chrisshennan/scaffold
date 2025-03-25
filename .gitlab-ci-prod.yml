@@ -9,13 +9,14 @@ app_build_release:
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - echo "APP_ENV=prod" >> .env.local
+    - echo "$ENV_PROD" > .env.prod
     - echo "APP_RELEASE=${RELEASE}" >> .env.local
 
   script:
     - docker build --target=app --cache-from ${CI_REGISTRY_IMAGE}:app-latest -t ${CI_REGISTRY_IMAGE}:app-${RELEASE} -t ${CI_REGISTRY_IMAGE}:app-latest .
-    - docker build --target=app-nginx --cache-from ${CI_REGISTRY_IMAGE}:nginx-latest -t ${CI_REGISTRY_IMAGE}:nginx-${RELEASE} -t ${CI_REGISTRY_IMAGE}:nginx-latest .
-    - docker push ${CI_REGISTRY_IMAGE}:nginx-${RELEASE}
-    - docker push ${CI_REGISTRY_IMAGE}:nginx-latest
+    - docker build --target=app-caddy --cache-from ${CI_REGISTRY_IMAGE}:caddy-latest -t ${CI_REGISTRY_IMAGE}:caddy-${RELEASE} -t ${CI_REGISTRY_IMAGE}:caddy-latest .
+    - docker push ${CI_REGISTRY_IMAGE}:caddy-${RELEASE}
+    - docker push ${CI_REGISTRY_IMAGE}:caddy-latest
     - docker push ${CI_REGISTRY_IMAGE}:app-${RELEASE}
     - docker push ${CI_REGISTRY_IMAGE}:app-latest
   rules:

@@ -22,3 +22,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    uuid_factory:
+        class: Symfony\Component\Uid\Factory\UuidFactory
+        arguments:
+            $defaultClass: '7'
+
+    uuid7_generator:
+        class: Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator
+        arguments:
+            $factory: '@uuid_factory'

@@ -33,10 +33,11 @@ app_test:
   before_script:
     - cd /app
     - echo "APP_ENV=test" > .env.local
-  script:
     - ./bin/console doctrine:database:create
-#    - docker run --rm -v ${PWD}:/app -w /app idlemoments/php:8.3-fpm bash -c "APP_ENV=test doctrine:database:validate"
-    - ./vendor/bin/phpstan analyse
+    - ./bin/console doctrine:schema:update --force
+  script:
+    - ./bin/console doctrine:schema:validate
+    - ./vendor/bin/phpstan --memory-limit=1G analyse
     - XDEBUG_MODE=coverage ./vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/phpunit-junit-report.xml --coverage-text --colors=never --coverage-cobertura=$CI_PROJECT_DIR/coverage.cobertura.xml
 #    - mv phpunit-junit-report.xml $CI_PROJECT_DIR/
 #    - mv coverage.cobertura.xml $CI_PROJECT_DIR/

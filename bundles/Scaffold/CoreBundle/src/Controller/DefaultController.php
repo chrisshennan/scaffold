@@ -11,20 +11,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/scaffold/core', methods: ['GET'])]
-    public function index(): Response
-    {
-        return $this->render('default/index.html.twig');
-    }
-
     #[Route('/privacy-policy', name: 'scaffold_core_bundle_privacy_policy', methods: ['GET'])]
     public function privacyPolicy(
         #[Autowire(env: 'SCAFFOLD_PRIVACY_POLICY_LAST_UPDATED')]
         string $lastUpdated,
         #[Autowire(env: 'SCAFFOLD_PRIVACY_POLICY_CONTACT_EMAIL')]
         string $contactEmail,
-    ): Response
-    {
+    ): Response {
         return $this->render('@ScaffoldCore/default/privacyPolicy.html.twig', [
             'last_updated' => $lastUpdated,
             'contact_email' => $contactEmail,
@@ -40,10 +33,8 @@ class DefaultController extends AbstractController
         #[Autowire(env: 'SCAFFOLD_TERMS_OF_SERVICE_JURISDICTION')]
         string $jurisdiction,
         #[Autowire(env: 'SCAFFOLD_TERMS_OF_SERVICE_PAYMENT_PROVIDER')]
-        string $paymentProvider
-
-    ): Response
-    {
+        string $paymentProvider,
+    ): Response {
         return $this->render('@ScaffoldCore/default/terms.html.twig', [
             'effective_from' => $effectiveFrom,
             'contact_email' => $contactEmail,

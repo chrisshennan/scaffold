@@ -1,6 +1,5 @@
 FROM composer AS composer
 
-ARG APP_ENV="prod"
 ARG COMPOSER_ARG="--no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts"
 
 COPY composer.* /app/
@@ -26,7 +25,7 @@ COPY --from=composer /app/vendor /app/vendor
 
 RUN echo "APP_ENV=prod" > .env.local
 
-RUN ./bin/console cache:clear
+RUN ./bin/console cache:clear --no-warmup
 
 RUN HTTPDUSER=`ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1` && \
     setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/log && \
@@ -37,12 +36,6 @@ RUN ./bin/console importmap:install
 
 RUN ./bin/console tailwind:build --minify
 RUN ./bin/console asset-map:compile
-
-# Copy assets to shared folder so we can allow nginx access to them
-COPY ./config/build/php-start-server.sh /start-server.sh
-RUN chmod +x /start-server.sh
-
-CMD ["/start-server.sh"]
 
 FROM app AS app-dev
 
@@ -63,8 +56,13 @@ RUN php -r "unlink('composer-setup.php');"
 
 RUN mv composer.phar /usr/local/bin/composer
 
-FROM nginx:1.27.2 AS app-nginx
+FROM caddy:2.9.1-builder-alpine AS caddy-builder
 
-COPY ./config/docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+RUN xcaddy build v2.9.1 \
+    --with github.com/caddy-dns/route53@v1.5.1
 
+FROM caddy:2.9.1-alpine AS app-caddy
+
+COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
+COPY ./config/deploy/caddy /etc/caddy
 COPY --from=app /app/public/ /app/public/

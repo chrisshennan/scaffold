@@ -3,8 +3,8 @@
     <nav class="max-w-[85rem] mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="me-5">
             <!-- Logo -->
-            <a class="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80 text-neutral-200" href="{{ path('app_default_index') }}" aria-label="[Build With Scaffold]">
-                {{ scaffold_site_name }}
+            <a class="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80 text-neutral-200" href="{{ path('app_default_index') }}" aria-label="{{ scaffold_site_name() }}">
+                {{ scaffold_site_name() }}
             </a>
             <!-- End Logo -->
         </div>
@@ -14,39 +14,39 @@
         </div>
 
         <div class="flex-1 flex flex-row justify-end items-center gap-1">
-            <!-- Collapse -->
-            <div class="md:hidden">
-                <button type="button" class="hs-collapse-toggle size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none" id="hs-secondaru-navbar-collapse" aria-expanded="false" aria-controls="hs-secondaru-navbar" aria-label="Toggle navigation" data-hs-collapse="#hs-secondaru-navbar">
-                    <svg class="hs-collapse-open:hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
-                    <svg class="hs-collapse-open:block shrink-0 hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    <span class="sr-only">Toggle navigation</span>
-                </button>
-            </div>
-            <!-- End Collapse -->
+{#            <!-- Collapse -->#}
+{#            <div class="md:hidden">#}
+{#                <button type="button" class="hs-collapse-toggle size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none" id="hs-secondaru-navbar-collapse" aria-expanded="false" aria-controls="hs-secondaru-navbar" aria-label="Toggle navigation" data-hs-collapse="#hs-secondaru-navbar">#}
+{#                    <svg class="hs-collapse-open:hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>#}
+{#                    <svg class="hs-collapse-open:block shrink-0 hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>#}
+{#                    <span class="sr-only">Toggle navigation</span>#}
+{#                </button>#}
+{#            </div>#}
+{#            <!-- End Collapse -->#}
 
 
-            <button type="button" class="hs-dark-mode-active:block hidden hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-none focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="dark" onclick="documentElement.classList.toggle('dark')">
-  <span class="group inline-flex shrink-0 justify-center items-center size-9">
-    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-    </svg>
-  </span>
-            </button>
-            <button type="button" class="hs-dark-mode-active:block block hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-none focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="light" onclick="documentElement.classList.toggle('dark')">
-  <span class="group inline-flex shrink-0 justify-center items-center size-9">
-    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="4"></circle>
-      <path d="M12 2v2"></path>
-      <path d="M12 20v2"></path>
-      <path d="m4.93 4.93 1.41 1.41"></path>
-      <path d="m17.66 17.66 1.41 1.41"></path>
-      <path d="M2 12h2"></path>
-      <path d="M20 12h2"></path>
-      <path d="m6.34 17.66-1.41 1.41"></path>
-      <path d="m19.07 4.93-1.41 1.41"></path>
-    </svg>
-  </span>
-            </button>
+{#            <button type="button" class="hs-dark-mode-active:block hidden hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-none focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="dark" onclick="documentElement.classList.toggle('dark')">#}
+{#              <span class="group inline-flex shrink-0 justify-center items-center size-9">#}
+{#                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">#}
+{#                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>#}
+{#                </svg>#}
+{#              </span>#}
+{#            </button>#}
+{#            <button type="button" class="hs-dark-mode-active:block block hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-none focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="light" onclick="documentElement.classList.toggle('dark')">#}
+{#              <span class="group inline-flex shrink-0 justify-center items-center size-9">#}
+{#                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">#}
+{#                  <circle cx="12" cy="12" r="4"></circle>#}
+{#                  <path d="M12 2v2"></path>#}
+{#                  <path d="M12 20v2"></path>#}
+{#                  <path d="m4.93 4.93 1.41 1.41"></path>#}
+{#                  <path d="m17.66 17.66 1.41 1.41"></path>#}
+{#                  <path d="M2 12h2"></path>#}
+{#                  <path d="M20 12h2"></path>#}
+{#                  <path d="m6.34 17.66-1.41 1.41"></path>#}
+{#                  <path d="m19.07 4.93-1.41 1.41"></path>#}
+{#                </svg>#}
+{#              </span>#}
+{#            </button>#}
         </div>
     </nav>
 </header>

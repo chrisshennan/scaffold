@@ -3,8 +3,8 @@ module.exports = {
   content: [
     "./assets/**/*.js",
     "./assets/styles/app.css",
-    "./templates/**/*.html.twig",
-    "./bundles/Scaffold/CoreBundle/templates/**/*.html.twig",
+    "./templates/**/**.html.twig",
+    "./bundles/Scaffold/CoreBundle/templates/**/**.html.twig",
   ],
   darkMode: "class",
   theme: {

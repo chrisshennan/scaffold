@@ -11,3 +11,4 @@ services:
     exclude:
       - '../src/DependencyInjection/'
       - '../src/Entity/'
+      - '../src/Repository/'

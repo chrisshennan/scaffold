@@ -6,6 +6,7 @@
 !/.env.local
 !/.env.prod
 !/.env.prod.local
+!/.env.test
 !/assets/
 !/bin/
 !/bundles/
