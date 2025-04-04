@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Scaffold\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use Scaffold\CoreBundle\Traits\TimestampableTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -80,13 +81,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
     }
 
-    #[\Override]
+    #[Override]
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
@@ -100,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return string[]
      */
-    #[\Override]
+    #[Override]
     public function getRoles(): array
     {
         if (!empty($this->roles)) {

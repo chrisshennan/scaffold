@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Scaffold\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use Scaffold\CoreBundle\Traits\TimestampableTrait;
+use Stringable;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\MappedSuperclass]
-class Workspace implements \Stringable
+class Workspace implements Stringable
 {
     use TimestampableTrait;
 
@@ -43,7 +45,7 @@ class Workspace implements \Stringable
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
         return $this->getName();
