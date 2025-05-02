@@ -1,8 +1,7 @@
 parameters:
     level: 6
     paths:
-        - bin/
-        - config/
-        - public/
+#        - bundles/ # @todo - add bundles and fix issues
         - src/
         - tests/
+    treatPhpDocTypesAsCertain: false

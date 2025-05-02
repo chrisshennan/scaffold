@@ -22,6 +22,7 @@ class ScaffoldExtension extends AbstractExtension
         return [
             new TwigFunction('scaffold_site_name', [$this, 'siteName']),
             new TwigFunction('scaffold_site_strapline', [$this, 'siteStrapline']),
+            new TwigFunction('scaffold_site_logo', [$this, 'siteLogo']),
         ];
     }
 
@@ -33,5 +34,10 @@ class ScaffoldExtension extends AbstractExtension
     public function siteStrapline(): string
     {
         return $this->context->get('strapline') ?? $this->twig->getGlobals()['scaffold_site_strapline_default'];
+    }
+
+    public function siteLogo(): string
+    {
+        return $this->context->get('logo') ?? '';
     }
 }

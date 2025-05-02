@@ -1,17 +1,23 @@
 workflow:
   rules:
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
-      when: never
-    - if: '$CI_COMMIT_TAG'
-      when: never
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    # Run pipeline ONLY when merge request event happens
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: always
+
+    # Run on main branch or tags outside MR context
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_TAG'
+      when: always
+
+    # Prevent branch push pipelines if there's an open MR
+    - when: never
 
 stages:
   - build_test
   - test
   - version
-  - trigger_prod_build
+  - deploy
 
 app_build_test:
   stage: build_test
@@ -23,6 +29,9 @@ app_build_test:
   script:
     - docker build --target=app-dev --cache-from ${CI_REGISTRY_IMAGE}:app-latest -t ${CI_REGISTRY_IMAGE}:test-${CI_COMMIT_SHORT_SHA} --build-arg APP_ENV="dev" --build-arg COMPOSER_ARG=" --ignore-platform-reqs --no-scripts" .
     - docker push ${CI_REGISTRY_IMAGE}:test-${CI_COMMIT_SHORT_SHA}
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
 app_test:
   stage: test
@@ -39,8 +48,6 @@ app_test:
     - ./bin/console doctrine:schema:validate
     - ./vendor/bin/phpstan --memory-limit=1G analyse
     - XDEBUG_MODE=coverage ./vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/phpunit-junit-report.xml --coverage-text --colors=never --coverage-cobertura=$CI_PROJECT_DIR/coverage.cobertura.xml
-#    - mv phpunit-junit-report.xml $CI_PROJECT_DIR/
-#    - mv coverage.cobertura.xml $CI_PROJECT_DIR/
   artifacts:
     when: on_success
     expire_in: 7 days
@@ -49,6 +56,9 @@ app_test:
         coverage_format: cobertura
         path: coverage.cobertura.xml
       junit: phpunit-junit-report.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
 semantic-versioning:
   stage: version
@@ -57,24 +67,30 @@ semantic-versioning:
     GITLAB_TOKEN: $GITLAB_TOKEN_SEMANTIC_VERSIONING
   script:
     - semantic-release
-  artifacts:
-    paths:
-      - release.env
-    reports:
-      dotenv: release.env
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       when: on_success
 
-app_trigger_prod_build:
-  stage: trigger_prod_build
-  variables:
-    PARENT_PIPELINE_SOURCE: $CI_PIPELINE_SOURCE
-  allow_failure: true
-  trigger:
-    include: .gitlab-ci-prod.yml
-    forward:
-      pipeline_variables: true
+app_build_release:
+  stage: deploy
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - echo "APP_ENV=prod" >> .env.local
+    - echo "$ENV_PROD" > .env.prod
+    - echo "APP_RELEASE=${RELEASE}" >> .env.local
+  script:
+    - docker build --target=app --cache-from ${CI_REGISTRY_IMAGE}:app-latest -t ${CI_REGISTRY_IMAGE}:app-${RELEASE} -t ${CI_REGISTRY_IMAGE}:app-latest .
+    - docker build --target=app-caddy --cache-from ${CI_REGISTRY_IMAGE}:caddy-latest -t ${CI_REGISTRY_IMAGE}:caddy-${RELEASE} -t ${CI_REGISTRY_IMAGE}:caddy-latest .
+    - docker push ${CI_REGISTRY_IMAGE}:caddy-${RELEASE}
+    - docker push ${CI_REGISTRY_IMAGE}:caddy-latest
+    - docker push ${CI_REGISTRY_IMAGE}:app-${RELEASE}
+    - docker push ${CI_REGISTRY_IMAGE}:app-latest
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: on_success
+    - if: $CI_COMMIT_TAG =~ /\d+\.\d+\.\d+$/
+      variables:
+        RELEASE: $CI_COMMIT_TAG
+      when: always
+    - when: never

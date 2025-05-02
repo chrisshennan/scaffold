@@ -10,11 +10,17 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
+      - app_public_storage:/app/public/uploads
 
   php:
     restart: unless-stopped
     image: ${CI_REGISTRY_IMAGE}:app-${RELEASE}
+    volumes:
+      - app_public_storage:/app/public/uploads
+      - app_private_storage:/app/storage
 
 volumes:
   caddy_data:
   caddy_config:
+  app_public_storage:
+  app_private_storage:

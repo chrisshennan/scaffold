@@ -3,27 +3,16 @@
     "main"
   ],
   "plugins": [
-    ["@semantic-release/commit-analyzer", {
-      "preset": "conventionalcommits",
-      "presetConfig": {
-        "types": [
-          {"type": "feat", "section": "Features"},
-          {"type": "fix", "section": "Bug Fixes"},
-          {"type": "chore", "hidden": true},
-          {"type": "docs", "hidden": true},
-          {"type": "style", "hidden": true},
-          {"type": "refactor", "hidden": true},
-          {"type": "perf", "hidden": true},
-          {"type": "test", "hidden": true}
-        ],
-        "issueUrlFormat": "https://gitlab.com/chrisshennan/semver-test/-/issues/{{id}}"
-      }
-    }],
     [
-      "@semantic-release/exec",
+      "@semantic-release/commit-analyzer",
       {
-        "verifyReleaseCmd": "echo \"RELEASE=${nextRelease.version}\" > release.env"
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "Upgrade to"]
+        }
       }
-    ]
+    ],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/gitlab"
   ]
 }
