@@ -1,4 +1,16 @@
+(common) {
+    header /* {
+        -Server
+        -X-Powered-By
+    }
+
+    # Enable test compression
+    encode gzip zstd br
+}
+
 website.localhost {
+    import common
+
     tls internal
 
     root * /app/public

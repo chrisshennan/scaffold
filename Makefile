@@ -11,6 +11,7 @@ help:
 	@echo '  composer-update - update the vendor packages'
 	@echo '  initialize - Install composer & tailwind dependencies in a new projct'
 	@echo '  start - starts up the docker docker containers'
+	@echo '  start-rebuild - starts up the docker containers after rebuilding the images'
 	@echo '  stop - stop up the docker docker containers'
 	@echo '  composer-update - update the vendor packages'
 	@echo '  tests - run the tests via PHPUnit'
@@ -76,6 +77,10 @@ rector-apply:
 .PHONY: start
 start:
 	docker compose up -d
+
+.PHONY: start-rebuild
+start-rebuild:
+	docker compose up -d --build
 
 .PHONY: stop
 stop:

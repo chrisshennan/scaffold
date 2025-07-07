@@ -2,7 +2,19 @@
     email [your@email.address]
 }
 
+(common) {
+    header /* {
+        -Server
+        -X-Powered-By
+    }
+
+    # Enable test compression
+    encode gzip zstd br
+}
+
 buildwithscaffold.com {
+    import common
+
     root * /app/public
 
     php_fastcgi php:9000
@@ -15,5 +27,7 @@ buildwithscaffold.com {
 }
 
 www.buildwithscaffold.com {
+    import common
+
     redir https://buildwithscaffold.com{uri} 301
 }

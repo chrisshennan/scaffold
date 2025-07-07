@@ -5,7 +5,7 @@ ARG COMPOSER_ARG="--no-dev --optimize-autoloader --ignore-platform-reqs --no-scr
 COPY composer.* /app/
 RUN composer install $COMPOSER_ARG
 
-FROM php:8.3-fpm AS base
+FROM php:8.4-fpm AS base
 
 RUN apt-get update && apt-get install -y \
         libicu-dev \
@@ -58,10 +58,19 @@ RUN mv composer.phar /usr/local/bin/composer
 
 FROM caddy:2.9.1-builder-alpine AS caddy-builder
 
-RUN xcaddy build v2.9.1 \
-    --with github.com/caddy-dns/route53@v1.5.1
+# 1) C tool‑chain + Brotli headers/libs
+RUN apk add --no-cache build-base brotli-dev pkgconfig
+
+# 2) Turn cgo ON (off by default in the builder image)
+ENV CGO_ENABLED=1
+
+RUN xcaddy build v2.10.0 \
+    # Used for optimizing responses with Brotli compression
+    --with github.com/dunglas/caddy-cbrotli@v1.0.1
 
 FROM caddy:2.9.1-alpine AS app-caddy
+
+RUN apk add --no-cache brotli
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 COPY ./config/deploy/caddy /etc/caddy

@@ -44,6 +44,7 @@ services:
     volumes:
       - ./:/app:cached
       - ./config/docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
+      - ./config/docker/php/custom-local.ini:/usr/local/etc/php/conf.d/custom-local.ini
     depends_on:
       - database
     networks:

@@ -1,7 +1,7 @@
 ###> scaffold ###
 .idea
 /config/*/.env
-
+/config/docker/php/custom-local.ini
 ###< scaffold ###
 
 ###> symfony/framework-bundle ###
