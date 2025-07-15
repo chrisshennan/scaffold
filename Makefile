@@ -80,7 +80,7 @@ start:
 
 .PHONY: start-rebuild
 start-rebuild:
-	docker compose up -d --build
+	docker compose up -d --build --force-recreate
 
 .PHONY: stop
 stop:

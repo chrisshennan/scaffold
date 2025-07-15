@@ -56,7 +56,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 RUN mv composer.phar /usr/local/bin/composer
 
-FROM caddy:2.9.1-builder-alpine AS caddy-builder
+FROM caddy:2.10.0-builder-alpine AS caddy-builder
 
 # 1) C tool‑chain + Brotli headers/libs
 RUN apk add --no-cache build-base brotli-dev pkgconfig
@@ -68,10 +68,13 @@ RUN xcaddy build v2.10.0 \
     # Used for optimizing responses with Brotli compression
     --with github.com/dunglas/caddy-cbrotli@v1.0.1
 
-FROM caddy:2.9.1-alpine AS app-caddy
+FROM caddy:2.10.0-alpine AS app-caddy
 
 RUN apk add --no-cache brotli
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 COPY ./config/deploy/caddy /etc/caddy
 COPY --from=app /app/public/ /app/public/
+
+FROM app-caddy as app-caddy-dev
+COPY ./config/docker/caddy /etc/caddy
