@@ -2,6 +2,7 @@
 .idea
 /config/*/.env
 /config/docker/php/custom-local.ini
+public/uploads/
 ###< scaffold ###
 
 ###> symfony/framework-bundle ###

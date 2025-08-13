@@ -88,6 +88,7 @@ stop:
 
 .PHONY: tests
 tests:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./bin/console cache:warmup"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpunit"
 
 .PHONY: validate
@@ -109,3 +110,9 @@ reset-dev-database:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:create"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:migrations:migrate --no-interaction"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:fixtures:load --no-interaction"
+
+.PHONY: reset-test-database
+reset-test-database:
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./bin/console doctrine:database:drop --force"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./bin/console doctrine:database:create"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./bin/console doctrine:schema:update --force --no-interaction"

@@ -3,6 +3,10 @@ FROM composer AS composer
 ARG COMPOSER_ARG="--no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts"
 
 COPY composer.* /app/
+
+# Copy the bundles directory to the composer stage as it's a local path repository
+COPY bundles /app/bundles
+
 RUN composer install $COMPOSER_ARG
 
 FROM php:8.4-fpm AS base
@@ -76,5 +80,5 @@ COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 COPY ./config/deploy/caddy /etc/caddy
 COPY --from=app /app/public/ /app/public/
 
-FROM app-caddy as app-caddy-dev
+FROM app-caddy AS app-caddy-dev
 COPY ./config/docker/caddy /etc/caddy

@@ -24,10 +24,13 @@ return [
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@scaffold-core/scaffold.js' => [
+        'path' => 'scaffold-core/scaffold.js',
+    ],
     '@hotwired/turbo' => [
-        'version' => '7.3.0',
+        'version' => '8.0.13',
     ],
     'preline' => [
-        'version' => '2.7.0',
+        'version' => '3.2.2',
     ],
 ];

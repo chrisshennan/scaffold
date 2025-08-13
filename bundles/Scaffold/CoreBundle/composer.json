@@ -1,0 +1,26 @@
+{
+    "name": "scaffold/core-bundle",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "Scaffold\\CoreBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Chris Shennan",
+            "email": "chris@chrisshennan.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "symfony": {
+            "asset-mapper": {
+                "paths": {
+                    "assets": "scaffold-core"
+                }
+            }
+        }
+    }
+}

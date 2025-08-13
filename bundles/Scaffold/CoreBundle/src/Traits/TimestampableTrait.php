@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimestampableTrait
 {
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Gedmo\Timestampable(on: 'create')]
     private DateTimeImmutable $createdAt;
 
@@ -35,9 +35,9 @@ trait TimestampableTrait
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(): static
+    public function setUpdatedAt(DateTimeImmutable $updatedAt = new DateTimeImmutable()): static
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

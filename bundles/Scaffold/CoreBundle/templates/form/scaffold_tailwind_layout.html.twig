@@ -11,7 +11,12 @@
 {%- endblock form_label -%}
 
 {%- block widget_attributes -%}
-    {%- set attr = attr|merge({ class: attr.class|default(widget_class|default('py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600')) ~ (disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500')) ~ (errors|length ? ' ' ~ widget_errors_class|default('border-red-700')) }) -%}
+    {%- set default_classes = 'py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600' -%}
+    {%- set disabled_classes = disabled ? ' ' ~ widget_disabled_class|default('border-gray-300 text-gray-500') : '' -%}
+    {%- set error_classes = (errors|length) ? ' ' ~ widget_errors_class|default('border-red-700') : '' -%}
+    {%- set existing_classes = attr.class|default('') -%}
+    {%- set merged_classes = default_classes ~ ' ' ~ existing_classes ~ disabled_classes ~ error_classes -%}
+    {%- set attr = attr|merge({ class: merged_classes|trim }) -%}
     {{- parent() -}}
 {%- endblock widget_attributes -%}
 
@@ -34,3 +39,81 @@
         {{- form_help(form) -}}
     </div>
 {%- endblock checkbox_row -%}
+
+{%- block markdown_textarea_row -%}
+    <div data-controller="scaffold--markdown-textarea">
+        <div class="mt-3">
+            <div class="tabs-container"> {# Add a container for the tabs #}
+                <div style="position: relative;" data-scaffold--markdown-textarea-upload-url-value="{{ path('app_site_markdown_textrea_image_upload') }}">
+
+                    <div class="mt-3">
+
+                        {{ form_label(form) }}
+
+                        {# Tabs Navigation #}
+                        <div class="border-b border-gray-200 dark:border-neutral-700 mb-2">
+                            <nav class="flex gap-x-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
+                                <button id="tabs-edit-content-button"
+                                        type="button"
+                                        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-blue-500 active"
+                                        aria-selected="true"
+                                        data-hs-tab="#tabs-edit-content"
+                                        aria-controls="tabs-edit-content"
+                                        role="tab"
+                                >
+                                    Edit
+                                </button>
+                                <button id="tabs-preview-content-button"
+                                        type="button"
+                                        class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-blue-500"
+                                        aria-selected="false"
+                                        data-hs-tab="#tabs-preview-content"
+                                        aria-controls="tabs-preview-content"
+                                        role="tab"
+                                        data-action="click->scaffold--markdown-textarea#preview"
+                                >
+                                    Preview
+                                </button>
+                            </nav>
+                        </div>
+
+                        {# Tab Content Panels #}
+                        <div id="tabs-edit-content" role="tabpanel" aria-labelledby="tabs-edit-content-button" class="h-[600px]">
+                            {{ form_widget(form) }}
+                        </div>
+
+                        <div id="tabs-preview-content" class="hidden" role="tabpanel" aria-labelledby="tabs-preview-content-button">
+                            <div class="prose dark:prose-invert h-[600px] w-full max-w-none py-2 px-3 pe-11 block border-gray-200 shadow-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 overflow-y-auto"
+                                 data-scaffold--markdown-textarea-target="previewPanel"
+                            >
+                                {# This is where your rendered markdown preview will go #}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-scaffold--markdown-textarea-target="loader"
+                         style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255, 255, 255, 0.8);
+                    border-radius: 8px;
+                    z-index: 10;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s ease;
+                 ">
+                        <div class="markdown-textarea-spinner spinner-border py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" role="status">
+                            <span class="visually-hidden">Uploading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_errors(form) }}
+                {{ form_help(form) }}
+            </div>
+        </div>
+    </div>
+{%- endblock markdown_textarea_row -%}

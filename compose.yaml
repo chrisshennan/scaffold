@@ -8,7 +8,9 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_HOST=%
     ports:
-      - 3306:3306
+      - target: 3306
+        published: ${MYSQL_PORT:-0} # 0 = random port
+        protocol: tcp
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
@@ -31,7 +33,7 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - ./:/app:cached
+      - ./public:/app/public:cached
       - ./config/docker/caddy:/etc/caddy
       - caddy_data:/data
       - caddy_config:/config
@@ -47,6 +49,8 @@ services:
       - ./:/app:cached
       - ./config/docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
       - ./config/docker/php/custom-local.ini:/usr/local/etc/php/conf.d/custom-local.ini
+    environment:
+      PHP_IDE_CONFIG: "serverName=${APP_NAME:-scaffold}"
     depends_on:
       - database
     networks:

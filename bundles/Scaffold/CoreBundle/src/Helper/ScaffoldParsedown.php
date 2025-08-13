@@ -99,14 +99,27 @@ class ScaffoldParsedown extends Parsedown
     {
         $image = parent::inlineImage($Excerpt);
 
-        if ($image // Parsedown recognised the syntax
-            && isset($image['element']['attributes']['src'])
-            && !preg_match('#^(?:https?:)?//#', $image['element']['attributes']['src']) // keep external URLs as‑is
-        ) {
-            $logicalPath = ltrim($image['element']['attributes']['src'], '/');
-            $image['element']['attributes']['src'] =
-                $this->assetMapper->getPublicPath($logicalPath);  // e.g. /assets/images/duck‑3c16d92m.png
+        if ($image === null) {
+            return null;
         }
+
+        if ($image && isset($image['element']['attributes']['src'])) {
+            // @todo - replace `/uploads/` with a constant or configuration value.
+            if (str_starts_with($image['element']['attributes']['src'], '/uploads/')) {
+                // Keep user uploads as-is, e.g. /uploads/images/duck‑3c16d92m.png
+                return $image;
+            }
+
+            if (preg_match('#^(?:https?:)?//#', $image['element']['attributes']['src']) === 1) {
+                // Keep absolute URLs as-is, e.g. https://example.com/assets/images/duck‑3c16d92m.png
+                return $image;
+            }
+        }
+
+        // For relative paths, we assume they are in the public assets directory.
+        // e.g. /assets/images/duck‑3c16d92m.png
+        $logicalPath = ltrim($image['element']['attributes']['src'], '/');
+        $image['element']['attributes']['src'] = $this->assetMapper->getPublicPath($logicalPath);
 
         return $image;
     }

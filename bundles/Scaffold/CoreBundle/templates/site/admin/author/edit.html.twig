@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Author{% endblock %}
+
+{% block body %}
+
+    <div class="grid grid-cols-2 gap-4 mb-5">
+        <div class="mb-5">
+            <a class="inline-flex items-center gap-x-1.5 text-sm text-gray-600 decoration-2 hover:underline focus:outline-hidden focus:underline dark:text-blue-500" href="{{ path('app_site_admin_author_index')}}">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+                Back to list
+            </a>
+        </div>
+
+        <div class="text-right">
+            {{ include('@ScaffoldCore/site/admin/author/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="-m-1.5 overflow-x-auto">
+            <div class="p-1.5 min-w-full inline-block align-middle">
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">
+                    <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
+                                Update Author
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        {{ include('@ScaffoldCore/site/admin/author/_form.html.twig', {'button_label': 'Update'}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{#{% block javascripts %}#}
+{#    {{ parent() }}#}
+
+{#    <script>#}
+{#        document.getElementById('content_content').addEventListener("paste", (event) => {#}
+{#            event.preventDefault();#}
+
+{#            parseClipboardData();#}
+
+{#        });#}
+{#        function setTextToCurrentPos(text_to_insert) {#}
+{#            var curPos = document.getElementById("content_content").selectionStart;#}
+{#            let x = document.getElementById("content_content").value;#}
+{#            document.getElementById("content_content").value =#}
+{#                x.slice(0, curPos) + text_to_insert + x.slice(curPos);#}
+
+{#            document.getElementById('content_content').selectionStart = document.getElementById('content_content').selectionEnd = curPos + text_to_insert.length;#}
+{#        }#}
+
+{#        async function blobToBase64(blob) {#}
+{#            return new Promise((resolve, _) => {#}
+{#                const reader = new FileReader();#}
+{#                reader.onloadend = () => resolve(reader.result);#}
+{#                reader.readAsDataURL(blob);#}
+{#            });#}
+{#        }#}
+
+{#        async function parseClipboardData() {#}
+
+{#            const items = await navigator.clipboard.read().catch((err) => {#}
+{#                console.error(err);#}
+{#            });#}
+{#            for (let item of items) {#}
+{#                for (let type of item.types) {#}
+{#                    if (type.startsWith("image/")) {#}
+{#                        item.getType(type).then((imageBlob) => {#}
+
+{#                            blobToBase64(imageBlob).then(image => {#}
+{#                                let name = prompt("Enter a name for this image");#}
+{#                                if (name === null) {#}
+{#                                    return false;#}
+{#                                }#}
+
+{#                                // Upload the image to the server and get the url#}
+{#                                fetch("{{ path('app_admin_upload_image') }}", {#}
+{#                                    method: "POST",#}
+{#                                    headers: {#}
+{#                                        "Content-Type": "application/json",#}
+{#                                        "X-Requested-With": "XMLHttpRequest"#}
+{#                                    },#}
+{#                                    timeout: 10000,#}
+{#                                    body: JSON.stringify({#}
+{#                                        image: image,#}
+{#                                        name: name#}
+{#                                    }),#}
+{#                                }).then(response => response.json()).then(data => {#}
+{#                                    setTextToCurrentPos("![" + name + "](" + data.url + " \"" + name + "\")");#}
+{#                                }).catch(err => {#}
+{#                                    alert("Error uploading image");#}
+{#                                });#}
+{#                            })#}
+{#                        });#}
+{#                        return true;#}
+{#                    }#}
+
+{#                    if (type.startsWith("text/plain")) {#}
+{#                        navigator.clipboard#}
+{#                            .readText()#}
+{#                            .then((text) => (setTextToCurrentPos(text)));#}
+{#                        return true;#}
+{#                    }#}
+{#                }#}
+{#            }#}
+{#        }#}
+{#    </script>#}
+
+{#{% endblock %}#}

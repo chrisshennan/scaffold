@@ -25,7 +25,8 @@ security:
     access_control:
         - { route: 'app_login', roles: 'PUBLIC_ACCESS' }
         - { route: 'app_logout', roles: 'PUBLIC_ACCESS' }
-        - { path: '^/admin', roles: 'ROLE_WORKSPACE_ADMIN' }
+        - { path: '^/workspace/', roles: 'ROLE_WORKSPACE_ADMIN' }
+        - { path: '^/site/', roles: 'ROLE_SITE_ADMIN' }
         - { path: '^/', roles: 'PUBLIC_ACCESS' }
 
 when@test:

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+
+    <!-- Blog Article -->
+    <div>
+        <div class="grid lg:grid-cols-3 gap-y-8 lg:gap-y-0 lg:gap-x-6">
+            <!-- Content -->
+            <div class="lg:col-span-2">
+                <div class="py-8 lg:pe-8">
+                    <div class="space-y-5 lg:space-y-8">
+                        <a class="inline-flex items-center gap-x-1.5 text-sm text-gray-600 decoration-2 hover:underline focus:outline-hidden focus:underline dark:text-blue-500" href="{{ path('scaffold_core_site_blogcontent_index') }}">
+                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+                            Back to Blog
+                        </a>
+
+                        <article class="prose dark:prose-invert w-full max-w-none">
+                            <h2 class="text-3xl font-bold lg:text-5xl dark:text-white">{{ post.title }}</h2>
+
+                            <div class="flex items-center gap-x-5">
+    {#                            <a class="inline-flex items-center gap-1.5 py-1 px-3 sm:py-2 sm:px-4 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">#}
+    {#                                Company News#}
+    {#                            </a>#}
+                                <p class="text-xs sm:text-sm text-gray-800 dark:text-neutral-200">{{ post.publishedAt|date('F j, Y') }}</p>
+                            </div>
+
+                            {{ scaffold_markdown_parse(post.content) }}
+
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <!-- End Content -->
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1 lg:w-full lg:h-full lg:bg-linear-to-r lg:from-gray-50 lg:via-transparent lg:to-transparent dark:from-neutral-800">
+                <div class="sticky top-0 start-0 py-8 lg:ps-8">
+                    <!-- Avatar Media -->
+                    <div class="group flex items-center gap-x-3 border-b border-gray-200 pb-8 mb-8 dark:border-neutral-700">
+                        <a class="block shrink-0 focus:outline-hidden" href="#">
+                            <img class="size-10 rounded-full" src="{{ scaffold_author_pic(post.author, 32) }}" alt="{{ post.author.name }}">
+                        </a>
+
+                        <a class="group grow block focus:outline-hidden" href="">
+                            <h5 class="group-hover:text-gray-600 group-focus:text-gray-600 text-sm font-semibold text-gray-800 dark:group-hover:text-neutral-400 dark:group-focus:text-neutral-400 dark:text-neutral-200">
+                                {{ post.author.name }}
+                            </h5>
+                            <p class="text-sm text-gray-500 dark:text-neutral-500">
+                                {{ post.author.jobTitle }}
+                            </p>
+                        </a>
+
+                        <div class="grow">
+                            <div class="flex justify-end">
+                                <a href="{{ post.author.website }}" target="_blank" type="button" class="py-1.5 px-2.5 inline-flex items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>
+                                    Follow
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Avatar Media -->
+
+                    {{ render(controller('Scaffold\\CoreBundle\\Controller\\Site\\BlogContentComponentController::sidePanel', { limit: 3 })) }}
+                </div>
+            </div>
+            <!-- End Sidebar -->
+        </div>
+    </div>
+    <!-- End Blog Article -->
+
+{% endblock %}

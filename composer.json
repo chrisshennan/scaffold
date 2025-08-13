@@ -14,6 +14,7 @@
         "erusev/parsedown": "^1.7",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpstan/phpdoc-parser": "^1.32",
+        "scaffold/core-bundle": "dev-main",
         "stof/doctrine-extensions-bundle": "^1.13",
         "symfony/asset": "7.2.*",
         "symfony/asset-mapper": "7.2.*",
@@ -59,14 +60,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "Scaffold\\CoreBundle\\": "bundles/Scaffold/CoreBundle/src"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
-            "Scaffold\\Tests\\": "bundles/Scaffold/CoreBundle/tests"
+            "App\\Tests\\": "tests/"
         }
     },
     "replace": {
@@ -102,6 +101,7 @@
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^8.3",
         "doctrine/doctrine-fixtures-bundle": "^4.0",
         "friendsofphp/php-cs-fixer": "^3.65",
         "phpstan/phpstan": "^2",
@@ -114,6 +114,16 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^7.2",
         "symfony/stopwatch": "7.2.*",
-        "symfony/web-profiler-bundle": "7.2.*"
-    }
+        "symfony/web-profiler-bundle": "7.2.*",
+        "zenstruck/foundry": "^2.6"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "bundles/Scaffold/CoreBundle",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }

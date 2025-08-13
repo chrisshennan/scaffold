@@ -1,0 +1,17 @@
+<div class="space-y-6">
+    {% for post in posts %}
+    <!-- Media -->
+        <a class="group flex items-center gap-x-6 focus:outline-hidden" href="{{ path('scaffold_core_site_blogcontent_show', { post: post.slug }) }}">
+            <div class="grow">
+                  <span class="text-sm font-bold text-gray-800 group-hover:text-blue-600 group-focus:text-blue-600 dark:text-neutral-200 dark:group-hover:text-blue-500 dark:group-focus:text-blue-500">
+                    {{ post.title }}
+                  </span>
+            </div>
+
+            <div class="shrink-0 relative rounded-lg overflow-hidden size-20">
+                <img class="size-full absolute top-0 start-0 object-cover rounded-lg" src="{{ asset(scaffold_generate_image(post.mainImage)) }}" alt="{{ post.title }}">
+            </div>
+        </a>
+    <!-- End Media -->
+    {% endfor %}
+</div>
