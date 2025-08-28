@@ -1,5 +1,8 @@
 DOCKER_COMPOSE_COMMAND=docker compose run --rm php
 
+APP_NAME := $(notdir $(CURDIR))
+HTTP_PORT := $(shell grep '^HTTP_PORT=' .env | cut -d '=' -f2)
+
 .PHONY: help
 help:
 	@echo 'Following targets exist:'
@@ -9,7 +12,7 @@ help:
 	@echo '  cache-clear - clear the symfony cache'
 	@echo '  composer-install - install the specified vendor packages'
 	@echo '  composer-update - update the vendor packages'
-	@echo '  initialize - Install composer & tailwind dependencies in a new projct'
+	@echo '  initialize - Install composer & tailwind dependencies in a new project'
 	@echo '  start - starts up the docker docker containers'
 	@echo '  start-rebuild - starts up the docker containers after rebuilding the images'
 	@echo '  stop - stop up the docker docker containers'
@@ -32,7 +35,7 @@ composer-update:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "composer update"
 
 .PHONY: initialize
-initialize: git-initialize composer-install tailwind-build start initialize-complete
+initialize: git-initialize composer-install tailwind-build start reset-dev-database reset-test-database initialize-complete
 
 .PHONY: git-initialize
 git-initialize:
@@ -40,6 +43,7 @@ git-initialize:
 	read REPO; \
 	git remote remove origin; \
 	git remote add origin $$REPO;
+	sed -i "s/APP_NAME=.*/APP_NAME=$(APP_NAME)/g" .env;
 
 .PHONY:
 initialize-complete:
@@ -48,7 +52,8 @@ initialize-complete:
 	@echo "# SCAFFOLD SETUP COMPLETE 🎉 #"
 	@echo "##############################"
 	@echo ""
-	@echo "Your scaffold setup in now complete.  When you are ready, you can push your code to your repository via\n"
+	@echo "Your scaffold setup in now complete. You can access your site via http://scaffold.localhost:$(HTTP_PORT)\n"
+	@echo "When you are ready, you can push your code to your repository via\n"
 	@echo "git push origin main\n"
 	@echo "To hints, tips, updates & developments, sign up to my newsletter via https://chrisshennan.com/newsletter\n"
 	@echo "Happy building!"
@@ -89,7 +94,7 @@ stop:
 .PHONY: tests
 tests:
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./bin/console cache:warmup"
-	$(DOCKER_COMPOSE_COMMAND) bash -c "./vendor/bin/phpunit"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=test ./vendor/bin/phpunit"
 
 .PHONY: validate
 validate:
@@ -106,7 +111,7 @@ tailwind-watch:
 
 .PHONY: reset-dev-database
 reset-dev-database:
-	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:drop --force"
+	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:drop --if-exists --force"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:database:create"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:migrations:migrate --no-interaction"
 	$(DOCKER_COMPOSE_COMMAND) bash -c "APP_ENV=dev ./bin/console doctrine:fixtures:load --no-interaction"

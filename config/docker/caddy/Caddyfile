@@ -8,10 +8,8 @@
     encode gzip zstd br
 }
 
-website.localhost {
+http://scaffold.localhost {
     import common
-
-    tls internal
 
     root * /app/public
 

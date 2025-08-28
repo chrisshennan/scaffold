@@ -29,9 +29,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - target: 80
+        published: ${HTTP_PORT:-0} # 0 = random port
+        protocol: tcp
     volumes:
       - ./public:/app/public:cached
       - ./config/docker/caddy:/etc/caddy
