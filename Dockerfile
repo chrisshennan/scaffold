@@ -53,12 +53,20 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');"
+# Install composer programmatically - https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md
+RUN EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')" \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" \
+    \
+    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ] \
+    then \
+        >&2 echo 'ERROR: Invalid installer checksum' \
+        rm composer-setup.php \
+        exit 1 \
+    fi
 
-RUN mv composer.phar /usr/local/bin/composer
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
+    && rm composer-setup.php
 
 FROM caddy:2.10.0-builder-alpine AS caddy-builder
 
