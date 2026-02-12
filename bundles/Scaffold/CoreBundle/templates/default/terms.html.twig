@@ -1,32 +1,32 @@
 {% extends '@ScaffoldCore/base.html.twig' %}
 
 {% block seohead %}
-    <title>Terms of Service - {{ scaffold_site_name() }}!</title>
+    <title>Terms of Service - {{ scaffold_core.site.name }}!</title>
 
     <link rel="canonical" href="{{ url('app_terms') }}" />
 
-    <meta property="og:description" content="We want everyone to enjoy using {{ scaffold_site_name() }} so please follow the rules" />
-    <meta property="og:scaffold_site_name" content="{{ scaffold_site_name() }}" />
-    <meta property="og:title" content="Terms of Service - {{ scaffold_site_name() }}"/>
+    <meta property="og:description" content="We want everyone to enjoy using {{ scaffold_core.site.name }} so please follow the rules" />
+    <meta property="og:site_name" content="{{ scaffold_core.site.name }}" />
+    <meta property="og:title" content="Terms of Service - {{ scaffold_core.site.name }}"/>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url('app_terms') }}" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:description" content="We want everyone to enjoy using {{ scaffold_site_name() }} so please follow the rules" />
-    <meta name="twitter:title" content="Terms of Service - {{ scaffold_site_name() }}!" />
+    <meta name="twitter:description" content="We want everyone to enjoy using {{ scaffold_core.site.name }} so please follow the rules" />
+    <meta name="twitter:title" content="Terms of Service - {{ scaffold_core.site.name }}!" />
 {% endblock %}
 
 {% block body %}
 <article class="prose prose-lg max-w-none mb-10 mt-10">
-    <h1>Terms of Service for {{ scaffold_site_name() }}</h1>
+    <h1>Terms of Service for {{ scaffold_core.site.name }}</h1>
 
-    <p><strong>Effective Date:</strong> {{ effective_from|date('jS F Y') }}</p>
+    <p><strong>Effective Date:</strong> {{ scaffold_core.termsAndConditions.lastUpdated|date('jS F Y') }}</p>
 
-    <p>Welcome to {{ scaffold_site_name() }} ("Service"). These Terms and Conditions ("Terms") govern your access to and use of our software-as-a-service (SaaS) platform, available at {{ scaffold_site_url }} ("Website"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.</p>
+    <p>Welcome to {{ scaffold_core.site.name }} ("Service"). These Terms and Conditions ("Terms") govern your access to and use of our software-as-a-service (SaaS) platform, available at {{ scaffold_core.termsAndConditions.siteUrl }} ("Website"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.</p>
 
     <h2>1. Definitions</h2>
     <ul>
-        <li><strong>"Company"</strong> refers to {{ scaffold_site_name() }} ({{ scaffold_site_url }}), the provider of the Service and related services.</li>
+        <li><strong>"Company"</strong> refers to {{ scaffold_core.site.name }} ({{ scaffold_core.termsAndConditions.siteUrl }}), the provider of the Service and related services.</li>
         <li><strong>"User"</strong> refers to any individual or entity accessing or using the Service.</li>
         <li><strong>"Subscription"</strong> refers to the paid access plans available for the Service.</li>
     </ul>
@@ -44,12 +44,12 @@
     <h2>4. Subscription and Payment</h2>
     <ul>
         <li>The Service is offered on a subscription basis with various pricing plans.</li>
-        <li>Payments are processed via {{ payment_provider }}.</li>
+        <li>Payments are processed via {{ scaffold_core.termsAndConditions.paymentProvider }}.</li>
         <li>The Company reserves the right to change pricing with prior notice.</li>
         <li>Refunds
             <ul>
-                <li>If you aren’t satisfied with <strong>{{ scaffold_site_name() }}</strong>, we offer a 30 day money back guarantee. Simply cancel your account within the first 30 days and we will automatically refund your payment.</li>
-                <li>After the first 30 days, all refunds are provided at the sole discretion of <strong>{{ scaffold_site_name() }}</strong> and on a case-by-case basis and may be refused. <strong>{{ scaffold_site_name() }}</strong> will refuse a refund request if we find evidence of fraud, refund abuse, or other manipulative behaviour that entitles <strong>{{ scaffold_site_name() }}</strong> to counterclaim the refund.</li>
+                <li>If you aren’t satisfied with <strong>{{ scaffold_core.site.name }}</strong>, we offer a 30 day money back guarantee. Simply cancel your account within the first 30 days and we will automatically refund your payment.</li>
+                <li>After the first 30 days, all refunds are provided at the sole discretion of <strong>{{ scaffold_core.site.name }}</strong> and on a case-by-case basis and may be refused. <strong>{{ scaffold_core.site.name }}</strong> will refuse a refund request if we find evidence of fraud, refund abuse, or other manipulative behaviour that entitles <strong>{{ scaffold_core.site.name }}</strong> to counterclaim the refund.</li>
             </ul>
         </li>
 
@@ -92,9 +92,9 @@
     <p>We reserve the right to modify these Terms at any time. Changes will be effective upon posting to the Website. Continued use of the Service constitutes acceptance of the revised Terms.</p>
 
     <h2>13. Governing Law</h2>
-    <p>These Terms shall be governed by and construed in accordance with the laws of {{ jurisdiction }}. You irrevocably submit to the exclusive jurisdiction of the courts in that State or regions.</p>
+    <p>These Terms shall be governed by and construed in accordance with the laws of {{ scaffold_core.termsAndConditions.jurisdiction }}. You irrevocably submit to the exclusive jurisdiction of the courts in that State or regions.</p>
 
     <h2>14. Contact Information</h2>
-    <p>For any questions regarding these Terms, please contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+    <p>For any questions regarding these Terms, please contact us at <a href="mailto:{{ scaffold_core.termsAndConditions.contactEmail }}">{{ scaffold_core.termsAndConditions.contactEmail }}</a>.</p>
 </article>
 {% endblock %}

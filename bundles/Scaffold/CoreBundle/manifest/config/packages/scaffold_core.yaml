@@ -1,0 +1,16 @@
+# Link to build with scaffold documentation for full scaffold_core config
+scaffold_core:
+    site:
+        name: "My Scaffold App"
+        strapline: "The latest and greatest SaaS product"
+    privacy_policy:
+        last_updated: "CHANGE_ME"
+        contact_email: "CHANGE_ME"
+        site_url: "CHANGE_ME"
+    terms_and_conditions:
+        last_updated: "CHANGE_ME"
+        contact_email: "CHANGE_ME"
+        site_url: "CHANGE_ME"
+        jurisdiction: "CHANGE_ME"
+        payment_provider: "CHANGE_ME"
+

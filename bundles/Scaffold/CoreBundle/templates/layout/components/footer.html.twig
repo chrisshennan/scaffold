@@ -3,8 +3,8 @@
     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-5">
         {% block footer %}
             <div class="text-center md:text-start">
-                <a class="flex-none text-xl font-semibold text-black focus:outline-none dark:text-white" href="{{ path('app_default_index') }}" aria-label="Brand">{{ scaffold_site_name() }}</a>
-                <p class="mt-2">{{ scaffold_site_strapline() }}</p>
+                <a class="flex-none text-xl font-semibold text-black focus:outline-none dark:text-white" href="{{ path('homepage') }}" aria-label="Brand">{{ scaffold_core.site.name }}</a>
+                <p class="mt-2">{{ scaffold_core.site.strapline }}</p>
             </div>
             <!-- End Col -->
 

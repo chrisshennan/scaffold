@@ -1,0 +1,100 @@
+[
+    {
+        "group": "development environment",
+        "files": [
+            {
+                "src": ".dockerignore"
+            },
+            {
+                "src": ".editorconfig"
+            },
+            {
+                "src": ".gitlab-ci.yml"
+            },
+            {
+                "src": ".php-cs-fixer.dist.php"
+            },
+            {
+                "src": ".releaserc.json"
+            },
+            {
+                "src": "compose.yaml"
+            },
+            {
+                "src": "Dockerfile"
+            },
+            {
+                "src": "Makefile"
+            },
+            {
+                "src": "phpstan.dist.neon"
+            },
+            {
+                "src": "phpstan-baseline.neon"
+            },
+            {
+                "src": "phpunit.xml.dist"
+            }
+        ]
+    },
+    {
+        "group": "application",
+        "files": [
+            {
+                "src": "importmap.php"
+            },
+
+            {
+                "src": "assets/styles/app.css"
+            },
+            {
+                "src": "assets/app.js"
+            },
+            {
+                "src": "assets/bootstrap_scaffold.js"
+            },
+            {
+                "src": "config/packages/scaffold_core.yaml"
+            },
+            {
+                "src": "config/docker/caddy/Caddyfile"
+            },
+            {
+                "src": "config/docker/php/scaffold-dev-custom.local.ini"
+            },
+            {
+                "src": "config/docker/php/scaffold-dev-xdebug.ini"
+            },
+            {
+                "src": "config/deploy/caddy/Caddyfile"
+            },
+            {
+                "src": "config/deploy/php/scaffold-custom.ini"
+            },
+            {
+                "src": "src/Entity/Author.php"
+            },
+            {
+                "src": "src/Entity/BlogContent.php"
+            },
+            {
+                "src": "src/Entity/User.php"
+            },
+            {
+                "src": "src/Entity/Workspace.php"
+            },
+            {
+                "src": "src/Repository/AuthorRepository.php"
+            },
+            {
+                "src": "src/Repository/BlogContentRepository.php"
+            },
+            {
+                "src": "src/Repository/UserRepository.php"
+            },
+            {
+                "src": "src/Repository/WorkspaceRepository.php"
+            }
+        ]
+    }
+]

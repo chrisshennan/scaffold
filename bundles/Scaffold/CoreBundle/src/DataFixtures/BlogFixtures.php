@@ -35,7 +35,7 @@ class BlogFixtures extends Fixture implements FixtureGroupInterface
 #### This is a h4 heading
 EOF
             );
-
+        
         $manager->persist($blog);
         $manager->flush();
     }

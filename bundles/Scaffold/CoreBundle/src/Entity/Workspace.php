@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Scaffold\CoreBundle\Traits\TimestampableTrait;
 use Stringable;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 
 #[ORM\MappedSuperclass]
 class Workspace implements Stringable
@@ -16,19 +16,18 @@ class Workspace implements Stringable
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\CustomIdGenerator('uuid7_generator')]
-    private Uuid $id;
+    private UuidV7 $id;
 
     #[ORM\Column(length: 255)]
     private string $name;
 
     public function __construct()
     {
+        $this->id = new UuidV7();
     }
 
-    public function getId(): Uuid
+    public function getId(): UuidV7
     {
         return $this->id;
     }

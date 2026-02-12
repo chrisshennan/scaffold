@@ -1,11 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
     form_themes: [ 'tailwind_2_layout.html.twig', '@ScaffoldCore/form/scaffold_tailwind_layout.html.twig' ]
-    globals:
-        scaffold_site_name_default: '%env(SCAFFOLD_SITE_NAME)%'
-        scaffold_site_strapline_default: '%env(SCAFFOLD_SITE_STRAPLINE)%'
-        scaffold_site_contact_email: '%env(SCAFFOLD_SITE_CONTACT_EMAIL)%'
-        scaffold_site_url: '%env(SCAFFOLD_SITE_URL)%'
+
 when@test:
     twig:
         strict_variables: true

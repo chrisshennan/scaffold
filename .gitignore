@@ -1,6 +1,9 @@
 ###> scaffold ###
+*.dist
 .idea
+.editorconfig
 /config/*/.env
+/config/reference.php
 /config/docker/php/custom-local.ini
 public/uploads/
 ###< scaffold ###
@@ -19,6 +22,7 @@ public/uploads/
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.cache
+!/phpunit.xml.dist
 ###< phpunit/phpunit ###
 
 ###> phpstan/phpstan ###
@@ -39,7 +43,6 @@ phpunit-junit-report.xml
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
-
 
 ###
 /storage/*

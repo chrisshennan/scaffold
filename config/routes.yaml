@@ -4,5 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-scaffold_core_controllers:
-    resource: '@ScaffoldCoreBundle/config/routes.yaml'
+scaffold_core_bundle:
+    resource: '@ScaffoldCoreBundle/Controller/'
+    type: attribute

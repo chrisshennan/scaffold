@@ -13,14 +13,40 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "doctrine/dbal": "^4",
+        "doctrine/doctrine-bundle": "^2.18.1",
+        "doctrine/doctrine-migrations-bundle": "^3.6",
+        "doctrine/orm": "^3.5.6",
+        "erusev/parsedown": "^1.7",
+        "symfony/asset": "7.3 || 7.4",
+        "symfony/asset-mapper": "7.3 || 7.4",
+        "symfony/security-bundle": "7.3 || 7.4",
+        "symfony/stimulus-bundle": ">=2.32",
+        "symfony/twig-bundle": "7.3 || 7.4",
+        "symfony/uid": "7.3 || 7.4",
+        "symfony/ux-turbo": ">=2.32",
+        "symfonycasts/tailwind-bundle": ">=0.12",
+        "stof/doctrine-extensions-bundle": "^v1.15.3",
+        "twig/extra-bundle": "^3.22",
+        "twig/twig": "^3.22"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "symfony/debug-bundle": "7.3 || 7.4",
+        "symfony/web-profiler-bundle": "7.3 || 7.4"
+    },
     "extra": {
         "symfony": {
             "asset-mapper": {
                 "paths": {
                     "assets": "scaffold-core"
                 }
-            }
+            },
+            "endpoint": [
+                "file://./recipes",
+                "flex://defaults"
+            ]
         }
     }
 }

@@ -10,6 +10,7 @@ use Scaffold\CoreBundle\Traits\TimestampableTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 
 #[ORM\MappedSuperclass]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -17,9 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\CustomIdGenerator('uuid7_generator')]
     private Uuid $id;
 
     #[ORM\Column(length: 255)]
@@ -40,7 +39,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    public function getId(): Uuid
+    public function __construct()
+    {
+        $this->id = new UuidV7();
+    }
+
+    public function getId(): UuidV7
     {
         return $this->id;
     }

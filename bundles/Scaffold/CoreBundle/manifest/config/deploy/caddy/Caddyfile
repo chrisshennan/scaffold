@@ -1,0 +1,33 @@
+{
+    email [your@email.address]
+}
+
+(common) {
+    header /* {
+        -Server
+        -X-Powered-By
+    }
+
+    # Enable test compression
+    encode gzip zstd br
+}
+
+buildwithscaffold.com {
+    import common
+
+    root * /app/public
+
+    php_fastcgi php:9000
+
+    # Handle static files directly
+    file_server
+
+    # Symfony specific rewrites
+    try_files {path} {path}/ /index.php{query}
+}
+
+www.buildwithscaffold.com {
+    import common
+
+    redir https://buildwithscaffold.com{uri} 301
+}
